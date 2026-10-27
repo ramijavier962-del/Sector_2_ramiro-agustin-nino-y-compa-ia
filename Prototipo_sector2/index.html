@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hack the School | Sector 01</title>
-    <link rel="stylesheet" href="css/estyles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="scanlines"></div>
@@ -72,47 +72,66 @@
                     <span class="tag">ENCRIPTADO</span>
                 </div>
 
-                <div id="pantallaInicio" class="center-screen">
-                    <div class="big-icon">⌘</div>
-                    
-<div class="intro-scene" id="escenaIntro">
-    <div class="scene-label">INICIALIZANDO OPERADOR...</div>
+                
+<!-- CARTEL DE INSTRUCCIONES -->
+<div id="pantallaInstrucciones" class="instructions-screen" hidden>
+    <div class="instructions-card">
+        <p class="eyebrow">NEXO // PLAYER GUIDE</p>
+        <h2>HOW TO PLAY</h2>
+        <p class="instruction-subtitle">
+            Read the instructions before starting your mission.
+        </p>
 
-    <div class="scene-floor"></div>
-
-    <div class="stickman" id="monigote">
-        <div class="stick-head"></div>
-        <div class="stick-body"></div>
-        <div class="stick-arm arm-left"></div>
-        <div class="stick-arm arm-right"></div>
-        <div class="stick-leg leg-left"></div>
-        <div class="stick-leg leg-right"></div>
-    </div>
-
-    <div class="computer" id="computadora">
-        <div class="computer-screen">
-            <span class="computer-text">SYSTEM<br>OFFLINE</span>
-            <span class="computer-glow"></span>
+        <div class="instruction-item">
+            <span class="instruction-icon">🎯</span>
+            <div>
+                <strong>YOUR MISSION</strong>
+                <p>Complete 8 mini-games and save the school system.</p>
+            </div>
         </div>
-        <div class="computer-neck"></div>
-        <div class="computer-base"></div>
-        <div class="computer-keyboard"></div>
-    </div>
 
-    <div class="scene-message" id="mensajeEscena">
-        ESPERANDO AL OPERADOR...
+        <div class="instruction-item">
+            <span class="instruction-icon">⌨️</span>
+            <div>
+                <strong>HOW TO PLAY</strong>
+                <p>Choose an answer or type the correct word.</p>
+            </div>
+        </div>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">❤️</span>
+            <div>
+                <strong>YOUR LIVES</strong>
+                <p>You have 3 lives. Wrong answers cost one life.</p>
+            </div>
+        </div>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">⏱️</span>
+            <div>
+                <strong>TIME LIMIT</strong>
+                <p>Finish all the missions before the time runs out.</p>
+            </div>
+        </div>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">⭐</span>
+            <div>
+                <strong>GET POINTS</strong>
+                <p>Answer correctly to earn points and unlock the next level.</p>
+            </div>
+        </div>
+
+        <div class="instruction-warning">
+            SYSTEM ALERT: The mission starts when you press PLAY.
+        </div>
+
+        <button id="btnComenzarMision" class="btn btn-primary">
+            PLAY NOW →
+        </button>
     </div>
 </div>
 
-<h2>¿ESTÁS LISTO?</h2>
-<p>
- Superá 8 pruebas, resolvé los desafíos y derrotá
- al malware que bloqueó el sistema.
- </p>
- <button id="btnIniciar" class="btn btn-primary">
-INICIAR OPERACIÓN
-</button>
-</div>
 
 <div id="zonaJuego" hidden>
  <p id="categoria" class="eyebrow"></p>
@@ -151,6 +170,6 @@ INICIAR OPERACIÓN
         </footer>
     </main>
 
-    <script src="Scrips/apps.js"></script>
+    <script src="Scripts/apps.js"></script>
 </body>
 </html>

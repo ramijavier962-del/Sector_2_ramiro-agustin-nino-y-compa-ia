@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hack the School | Sector 01</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="scanlines"></div>
+
+    <header class="topbar">
+        <div class="logo">HACK<span>_</span>THE<span>_</span>SCHOOL</div>
+        <div class="status"><span class="dot"></span> SISTEMA ACTIVO</div>
+    </header>
+
+    <main class="game-container">
+        <section class="intro">
+            <p class="eyebrow">SIMULACIÓN DE CIBERSEGURIDAD // NIVEL 01</p>
+            <h1>SECTOR <span>01</span></h1>
+            <p class="subtitle">Operación: recuperar el sistema escolar</p>
+        </section>
+
+        <section class="stats">
+            <div class="stat">
+                <span>TIEMPO</span>
+                <strong id="temporizador">10:00</strong>
+            </div>
+            <div class="stat">
+                <span>PUNTOS</span>
+                <strong id="puntos">0000</strong>
+            </div>
+            <div class="stat">
+                <span>INTEGRIDAD</span>
+                <strong id="vidas">♥ ♥ ♥</strong>
+            </div>
+            <div class="stat">
+                <span>PROGRESO</span>
+                <strong id="progreso">0/8</strong>
+            </div>
+        </section>
+
+        <div class="progress-track">
+            <div id="barraProgreso"></div>
+        </div>
+
+        <section class="layout">
+            <aside class="panel sidebar">
+                <h2>DIRECTORIO</h2>
+                <div class="file active">📁 sector_01</div>
+                <div class="file">📁 red_local</div>
+                <div class="file">📁 archivos</div>
+                <div class="file">📁 seguridad</div>
+                <div class="file">📁 sistema_final</div>
+
+                <div class="nexo">
+                    <div class="nexo-icon">N</div>
+                    <div>
+                        <strong>NEXO</strong>
+                        <small>Asistente virtual</small>
+                    </div>
+                </div>
+                <p id="mensajeNexo">
+                    Te estaba esperando. Tenemos que recuperar el sistema.
+                </p>
+            </aside>
+
+            <section class="panel mission-panel">
+                <div class="panel-heading">
+                    <span id="numeroMision">MISIÓN 00</span>
+                    <span class="tag">ENCRIPTADO</span>
+                </div>
+
+
+<!-- PANTALLA INICIAL -->
+<div id="pantallaInicio" class="center-screen">
+    <p class="eyebrow">NEXO // CONEXIÓN REQUERIDA</p>
+    <h2>READY, OPERATOR?</h2>
+    <p class="description">El sistema escolar está bloqueado. Activá la terminal para comenzar la operación.</p>
+
+    <div class="intro-scene" id="escenaIntro">
+        <div class="scene-label">REMOTE TERMINAL // SECTOR 01</div>
+        <div class="scene-floor"></div>
+        <div class="stickman" id="monigote" aria-label="Operador 2D caminando">
+            <div class="stick-head"><span class="face-eye eye-left"></span><span class="face-eye eye-right"></span><span class="face-smile"></span></div>
+            <div class="stick-body"><span class="shirt-mark"></span></div>
+            <div class="stick-arm arm-left"><span class="hand"></span></div>
+            <div class="stick-arm arm-right"><span class="hand"></span></div>
+            <div class="stick-leg leg-left"><span class="shoe"></span></div>
+            <div class="stick-leg leg-right"><span class="shoe"></span></div>
+        </div>
+        <div class="computer" id="computadora">
+            <div class="computer-screen">
+                <div class="computer-glow"></div>
+                <div class="computer-text">SYSTEM<br>OFFLINE</div>
+            </div>
+            <div class="computer-neck"></div>
+            <div class="computer-base"></div>
+            <div class="computer-keyboard"></div>
+        </div>
+        <div class="scene-message" id="mensajeEscena">WAITING FOR OPERATOR...</div>
+    </div>
+
+    <button id="btnIniciar" class="btn btn-primary">INICIAR OPERACIÓN →</button>
+</div>
+
+<!-- CARTEL DE INSTRUCCIONES -->
+<div id="pantallaInstrucciones" class="instructions-screen" hidden>
+    <div class="instructions-card">
+        <p class="eyebrow">NEXO // PLAYER GUIDE</p>
+        <h2>HOW TO PLAY</h2>
+        <p class="instruction-subtitle">
+            Read the instructions before starting your mission.
+        </p>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">🎯</span>
+            <div>
+                <strong>YOUR MISSION</strong>
+                <p>Complete 8 mini-games and save the school system.</p>
+            </div>
+        </div>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">⌨️</span>
+            <div>
+                <strong>HOW TO PLAY</strong>
+                <p>Choose an answer or type the correct word.</p>
+            </div>
+        </div>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">❤️</span>
+            <div>
+                <strong>YOUR LIVES</strong>
+                <p>You have 3 lives. Wrong answers cost one life.</p>
+            </div>
+        </div>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">⏱️</span>
+            <div>
+                <strong>TIME LIMIT</strong>
+                <p>Finish all the missions before the time runs out.</p>
+            </div>
+        </div>
+
+        <div class="instruction-item">
+            <span class="instruction-icon">⭐</span>
+            <div>
+                <strong>GET POINTS</strong>
+                <p>Answer correctly to earn points and unlock the next level.</p>
+            </div>
+        </div>
+
+        <div class="instruction-warning">
+            SYSTEM ALERT: The mission starts when you press PLAY.
+        </div>
+
+        <button id="btnComenzarMision" class="btn btn-primary">
+            PLAY NOW →
+        </button>
+    </div>
+</div>
+
+
+<div id="zonaJuego" hidden>
+ <p id="categoria" class="eyebrow"></p>
+ <h2 id="tituloMision"></h2>
+ <p id="descripcionMision" class="description"></p>
+
+ <div id="zonaDesafio"></div>
+
+<div id="resultado" class="result" aria-live="polite"></div>
+
+<button id="btnComprobar" class="btn btn-primary" hidden>
+    COMPROBAR RESPUESTA
+    </button>
+<button id="btnSiguiente" class="btn btn-primary" hidden>
+  SIGUIENTE MISIÓN →
+    </button>
+</div>
+
+<div id="pantallaFinal" class="center-screen" hidden>
+<div id="celebracionMonigote" class="celebration-stage" hidden aria-label="Monigote 2D festejando">
+    <span class="confetti confetti-one">✦</span><span class="confetti confetti-two">✦</span>
+    <span class="confetti confetti-three">✦</span><span class="confetti confetti-four">✦</span>
+    <div class="celebration-man">
+        <div class="celebration-head"><span class="celebration-eye left"></span><span class="celebration-eye right"></span><span class="celebration-smile"></span></div>
+        <div class="celebration-body"><span>★</span></div>
+        <div class="celebration-arm left"><i></i></div><div class="celebration-arm right"><i></i></div>
+        <div class="celebration-leg left"><i></i></div><div class="celebration-leg right"><i></i></div>
+    </div>
+    <p class="celebration-caption">MISSION COMPLETE! 🎉</p>
+</div>
+<div id="iconoFinal" class="big-icon">✓</div>
+<h2 id="tituloFinal">OPERACIÓN COMPLETADA</h2>
+<p id="textoFinal"></p>
+ <p class="final-score">
+   PUNTAJE FINAL: <strong id="puntajeFinal">0</strong>
+</p>
+<button id="btnReiniciar" class="btn btn-primary">
+    JUGAR DE NUEVO
+ </button>
+</div>
+</section>
+</section>
+
+<footer>
+  <span>HACK THE SCHOOL // ENTORNO SIMULADO</span>
+  <span>BUILD 01.08</span>
+        </footer>
+    </main>
+
+    <script src="Scripts/apps.js"></script>
+</body>
+</html>
