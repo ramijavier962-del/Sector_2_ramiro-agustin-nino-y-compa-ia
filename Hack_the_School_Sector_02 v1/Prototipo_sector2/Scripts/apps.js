@@ -1,11 +1,20 @@
 
-const DURACION = 600;
+const DURACION = 240;
 
 let segundosRestantes = DURACION;
 let intervalo = null;
 let puntos = 0;
 let vidas = 3;
 let misionActual = 0;
+let desafiosCompletados = 0;
+let directorioActual = null;
+const directorios = [
+    { nombre: "FILES", misiones: [0, 1] },
+    { nombre: "COMMANDS", misiones: [5, 6] },
+    { nombre: "NETWORK", misiones: [2, 3] },
+    { nombre: "SECURITY", misiones: [4, 7] }
+];
+const progresoDirectorios = [0, 0, 0, 0];
 let seleccion = null;
 let respondida = false;
 let juegoTerminado = false;
@@ -169,10 +178,10 @@ function actualizarPanel() {
     $("vidas").textContent =
         "♥ ".repeat(vidas) + "♡ ".repeat(3 - vidas);
     $("progreso").textContent =
-        `${misionActual}/${misiones.length}`;
+        `${desafiosCompletados}/${misiones.length}`;
 
     $("barraProgreso").style.width =
-        `${(misionActual / misiones.length) * 100}%`;
+        `${(desafiosCompletados / misiones.length) * 100}%`;
 }
 
 
@@ -193,13 +202,13 @@ function iniciarJuego() {
     escena.classList.remove("connected");
     escena.classList.add("walking");
 
-    mensajeEscena.textContent = "OPERADOR EN MOVIMIENTO...";
+    mensajeEscena.textContent = "NEXO INICIALIZANDO TERMINAL...";
     actualizarNexo(
         "¡Ahí estás, operador! Voy a acompañarte. Preparando la conexión con la terminal...",
         "thinking"
     );
 
-    // El monigote camina hacia la computadora
+    // NEXO inicia la conexión con la terminal
     esperaInicio = setTimeout(() => {
         escena.classList.add("connected");
         mensajeEscena.textContent = "CONEXIÓN ESTABLECIDA";
@@ -227,6 +236,7 @@ function mostrarInstrucciones() {
     esperaConexion = null;
     $("pantallaInicio").hidden = true;
     $("zonaJuego").hidden = true;
+    $("zonaDirectorios").hidden = true;
     $("pantallaFinal").hidden = true;
     $("pantallaInstrucciones").hidden = false;
     actualizarNexo("Read the instructions, operator. Press PLAY NOW when you are ready. ¡Estoy listo!", "happy");
@@ -240,10 +250,14 @@ function comenzarPartida() {
     $("pantallaInicio").hidden = true;
     $("pantallaInstrucciones").hidden = true;
     $("pantallaFinal").hidden = true;
-    $("zonaJuego").hidden = false;
+    $("zonaJuego").hidden = true;
+    $("zonaDirectorios").hidden = false;
+    directorioActual = null;
+    actualizarDirectorios();
+    actualizarNexo("Explorá los cuatro directorios. Cada carpeta tiene dos minijuegos. ¡Tenemos cuatro minutos, operador!", "happy");
 
-    // El contador empieza recién al comenzar la misión.
-    cargarMision();
+    // El contador global empieza al presionar PLAY NOW.
+    mostrarTiempo();
 
     intervalo = setInterval(() => {
         segundosRestantes--;
@@ -261,6 +275,48 @@ function comenzarPartida() {
     }, 1000);
 }
 
+
+
+function actualizarDirectorios() {
+    document.querySelectorAll("[data-directory]").forEach((boton) => {
+        const indice = Number(boton.dataset.directory);
+        const completadas = progresoDirectorios[indice];
+        const desbloqueado = indice === 0 || progresoDirectorios.slice(0, indice).every((valor) => valor === 2);
+        boton.disabled = !desbloqueado || completadas === 2;
+        boton.classList.toggle("completed", completadas === 2);
+        const estado = $("dirProgress" + indice);
+        if (estado) estado.textContent = completadas === 2 ? "✓ COMPLETADO" : desbloqueado ? `${completadas}/2 desafíos` : "BLOQUEADO";
+    });
+    document.querySelectorAll("[data-open-directory]").forEach((boton) => {
+        const indice = Number(boton.dataset.openDirectory);
+        const desbloqueado = indice === 0 || progresoDirectorios.slice(0, indice).every((valor) => valor === 2);
+        boton.disabled = !desbloqueado;
+        boton.classList.toggle("active", directorioActual === indice);
+    });
+}
+
+function entrarDirectorio(indice) {
+    if (juegoTerminado || indice < 0 || indice > 3) return;
+    const desbloqueado = indice === 0 || progresoDirectorios.slice(0, indice).every((valor) => valor === 2);
+    if (!desbloqueado || progresoDirectorios[indice] >= 2) return;
+    directorioActual = indice;
+    misionActual = directorios[indice].misiones[progresoDirectorios[indice]];
+    $("zonaDirectorios").hidden = true;
+    $("zonaJuego").hidden = false;
+    $("numeroMision").textContent = `DIRECTORIO ${String(indice + 1).padStart(2, "0")}`;
+    actualizarDirectorios();
+    actualizarNexo(`Entraste en ${directorios[indice].nombre}. Completá sus dos minijuegos para continuar.`, "thinking");
+    cargarMision();
+}
+
+function volverADirectorios() {
+    if (juegoTerminado) return;
+    $("zonaJuego").hidden = true;
+    $("zonaDirectorios").hidden = false;
+    directorioActual = null;
+    actualizarDirectorios();
+    actualizarNexo("Elegí el próximo directorio disponible. ¡No pierdas de vista el cronómetro!", "normal");
+}
 
 function cargarMision() {
     if (misionActual >= misiones.length) {
@@ -433,6 +489,8 @@ function comprobarRespuesta() {
     if (correcta) {
         respondida = true;
         puntos += 100 + Math.floor(segundosRestantes / 10);
+        desafiosCompletados++;
+        if (directorioActual !== null) progresoDirectorios[directorioActual] = Math.min(2, progresoDirectorios[directorioActual] + 1);
 
         resultado.textContent = m.explicacion;
         resultado.className = "result good";
@@ -458,6 +516,7 @@ function comprobarRespuesta() {
         ];
         actualizarNexo(mensajesExito[misionActual] || "¡Desafío superado! Seguimos avanzando.", "happy");
         actualizarPanel();
+        actualizarDirectorios();
     } else {
         vidas--;
         actualizarPanel();
@@ -490,8 +549,22 @@ function bloquearRespuestas() {
 function siguienteMision() {
     if (!respondida || juegoTerminado) return;
 
-    misionActual++;
-    cargarMision();
+    if (desafiosCompletados >= misiones.length) {
+        terminarJuego(true, "Superaste los ocho minijuegos, exploraste todos los directorios y recuperaste el sistema escolar.");
+        return;
+    }
+
+    const indice = directorioActual;
+    if (indice !== null && progresoDirectorios[indice] < 2) {
+        misionActual = directorios[indice].misiones[progresoDirectorios[indice]];
+        cargarMision();
+    } else {
+        $("zonaJuego").hidden = true;
+        $("zonaDirectorios").hidden = false;
+        directorioActual = null;
+        actualizarDirectorios();
+        actualizarNexo("¡Directorio completado! Elegí la siguiente carpeta desbloqueada.", "happy");
+    }
 }
 
 function terminarJuego(victoria, mensajeFinal) {
@@ -503,7 +576,9 @@ function terminarJuego(victoria, mensajeFinal) {
     intervalo = null;
 
     $("zonaJuego").hidden = true;
+    $("zonaDirectorios").hidden = true;
     $("pantallaInicio").hidden = true;
+    $("pantallaInstrucciones").hidden = true;
     $("pantallaFinal").hidden = false;
 
     $("iconoFinal").textContent = victoria ? "✓" : "×";
@@ -524,7 +599,7 @@ function terminarJuego(victoria, mensajeFinal) {
     );
 
     $("barraProgreso").style.width =
-        `${(misionActual / misiones.length) * 100}%`;
+        `${(desafiosCompletados / misiones.length) * 100}%`;
 }
 
 function reiniciarJuego() {
@@ -535,6 +610,9 @@ function reiniciarJuego() {
     puntos = 0;
     vidas = 3;
     misionActual = 0;
+    desafiosCompletados = 0;
+    directorioActual = null;
+    progresoDirectorios.fill(0);
     seleccion = null;
     respondida = false;
     juegoTerminado = false;
@@ -550,9 +628,11 @@ function reiniciarJuego() {
     $("pantallaInicio").hidden = false;
     $("pantallaInstrucciones").hidden = true;
     $("zonaJuego").hidden = true;
+    $("zonaDirectorios").hidden = true;
     $("pantallaFinal").hidden = true;
     $("celebracionMonigote").hidden = true;
     $("iconoFinal").hidden = false;
+    actualizarDirectorios();
     btnIniciar.disabled = false;
     btnIniciar.textContent = "INICIAR OPERACIÓN →";
     $("escenaIntro").classList.remove("walking", "connected");
@@ -569,9 +649,13 @@ btnIniciar.addEventListener("click", iniciarJuego);
 btnComprobar.addEventListener("click", comprobarRespuesta);
 btnSiguiente.addEventListener("click", siguienteMision);
 btnReiniciar.addEventListener("click", reiniciarJuego);
+$("btnVolverDirectorios").addEventListener("click", volverADirectorios);
+document.querySelectorAll("[data-directory]").forEach((boton) => boton.addEventListener("click", () => entrarDirectorio(Number(boton.dataset.directory))));
+document.querySelectorAll("[data-open-directory]").forEach((boton) => boton.addEventListener("click", () => entrarDirectorio(Number(boton.dataset.openDirectory))));
 
 mostrarTiempo();
 actualizarPanel();
+actualizarDirectorios();
 
 $("btnComenzarMision").addEventListener("click", function () {
     comenzarPartida();

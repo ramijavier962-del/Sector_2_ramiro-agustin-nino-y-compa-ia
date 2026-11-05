@@ -997,3 +997,57 @@ body::after {
     .intro-scene.connected .nexo-intro,
     .nexo-avatar.talking img { animation: none; opacity: 1; transform: none; }
 }
+
+
+/* DIRECTORIOS INTERACTIVOS Y MINIJUEGOS */
+.file {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-left: 2px solid transparent;
+    background: transparent;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.file:hover:not(:disabled), .file.active {
+    color: var(--green);
+    border-left-color: var(--green);
+    background: #102419;
+}
+.file:disabled { opacity: .35; cursor: not-allowed; }
+.directory-screen { padding: 8px 0 18px; animation: aparecerDirectorio .35s ease both; }
+.directory-screen h2 { margin: 8px 0; color: var(--green); letter-spacing: 2px; }
+.directory-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; margin: 22px 0; }
+.directory-card {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 7px;
+    padding: 17px;
+    border: 1px solid #236c40;
+    border-radius: 9px;
+    color: var(--text, #e4f5e8);
+    background: linear-gradient(145deg, #0b1d11, #061009);
+    text-align: left;
+    cursor: pointer;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+.directory-card:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--green); box-shadow: 0 0 18px #39ff8830; }
+.directory-card:disabled { opacity: .38; cursor: not-allowed; filter: grayscale(.6); }
+.directory-card.completed { border-color: #39ff88; background: linear-gradient(145deg, #10351f, #07150c); }
+.directory-icon { font-size: 27px; filter: drop-shadow(0 0 7px #39ff8866); }
+.directory-card strong { color: var(--green); font-size: 14px; letter-spacing: 2px; }
+.directory-card small, .directory-progress { color: var(--muted); font-size: 11px; }
+.directory-progress { margin-top: 4px; color: #9bfabb; }
+.directory-note { padding: 12px; border-left: 2px solid var(--green); background: #0a1b10; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.btn-secondary { margin: 10px 8px 0 0; padding: 11px 16px; border: 1px solid #34754b; border-radius: 5px; background: #0a1b10; color: #b7e9c5; cursor: pointer; font: inherit; }
+.btn-secondary:hover { border-color: var(--green); color: var(--green); }
+.celebration-nexo { position: absolute; left: 50%; top: 12px; width: 145px; height: 145px; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 0 13px #39ff8880); animation: nexoVictoria .7s ease-in-out infinite alternate; }
+@keyframes nexoVictoria { from { translate: 0 5px; rotate: -4deg; } to { translate: 0 -9px; rotate: 4deg; } }
+@keyframes aparecerDirectorio { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 620px) { .directory-grid { grid-template-columns: 1fr; } .directory-card { min-height: 118px; } }
+@media (prefers-reduced-motion: reduce) { .directory-screen, .celebration-nexo { animation: none; } }

@@ -25,7 +25,7 @@
         <section class="stats">
             <div class="stat">
                 <span>TIEMPO</span>
-                <strong id="temporizador">10:00</strong>
+                <strong id="temporizador">04:00</strong>
             </div>
             <div class="stat">
                 <span>PUNTOS</span>
@@ -48,11 +48,10 @@
         <section class="layout">
             <aside class="panel sidebar">
                 <h2>DIRECTORIO</h2>
-                <div class="file active">📁 sector_01</div>
-                <div class="file">📁 red_local</div>
-                <div class="file">📁 archivos</div>
-                <div class="file">📁 seguridad</div>
-                <div class="file">📁 sistema_final</div>
+                <button class="file active" type="button" data-open-directory="0">📁 archivos</button>
+                <button class="file" type="button" data-open-directory="1">📁 comandos</button>
+                <button class="file" type="button" data-open-directory="2">📁 red_local</button>
+                <button class="file" type="button" data-open-directory="3">📁 seguridad</button>
 
                 <div class="nexo">
                     <div class="nexo-avatar"><img src="assets/nexo-robot.png" alt="Robot NEXO"></div>
@@ -86,14 +85,7 @@
             <img src="assets/nexo-robot.png" alt="NEXO, robot asistente">
             <span>NEXO // ONLINE</span>
         </div>
-        <div class="stickman" id="monigote" aria-label="Operador 2D caminando">
-            <div class="stick-head"><span class="face-eye eye-left"></span><span class="face-eye eye-right"></span><span class="face-smile"></span></div>
-            <div class="stick-body"><span class="shirt-mark"></span></div>
-            <div class="stick-arm arm-left"><span class="hand"></span></div>
-            <div class="stick-arm arm-right"><span class="hand"></span></div>
-            <div class="stick-leg leg-left"><span class="shoe"></span></div>
-            <div class="stick-leg leg-right"><span class="shoe"></span></div>
-        </div>
+
         <div class="computer" id="computadora">
             <div class="computer-screen">
                 <div class="computer-glow"></div>
@@ -122,7 +114,7 @@
             <span class="instruction-icon">🎯</span>
             <div>
                 <strong>YOUR MISSION</strong>
-                <p>Complete 8 mini-games and save the school system.</p>
+                <p>Explore 4 directories, complete their mini-games and save the school system.</p>
             </div>
         </div>
 
@@ -145,8 +137,8 @@
         <div class="instruction-item">
             <span class="instruction-icon">⏱️</span>
             <div>
-                <strong>TIME LIMIT</strong>
-                <p>Finish all the missions before the time runs out.</p>
+                <strong>TIME LIMIT — 04:00</strong>
+                <p>You have 4 minutes to explore 4 directories and complete 8 mini-games.</p>
             </div>
         </div>
 
@@ -169,6 +161,28 @@
 </div>
 
 
+<!-- EXPLORADOR DE DIRECTORIOS -->
+<div id="zonaDirectorios" class="directory-screen" hidden>
+    <p class="eyebrow">NEXO // EXPLORADOR DEL SISTEMA</p>
+    <h2>SELECT A DIRECTORY</h2>
+    <p class="description">Entrá en cada carpeta y completá sus dos minijuegos para desbloquear la siguiente.</p>
+    <div class="directory-grid">
+        <button class="directory-card" type="button" data-directory="0">
+            <span class="directory-icon">📁</span><strong>FILES</strong><small>Archivos y detección</small><span class="directory-progress" id="dirProgress0">0/2 desafíos</span>
+        </button>
+        <button class="directory-card" type="button" data-directory="1" disabled>
+            <span class="directory-icon">⌨️</span><strong>COMMANDS</strong><small>Comandos y lógica</small><span class="directory-progress" id="dirProgress1">BLOQUEADO</span>
+        </button>
+        <button class="directory-card" type="button" data-directory="2" disabled>
+            <span class="directory-icon">🌐</span><strong>NETWORK</strong><small>Conexiones y protocolos</small><span class="directory-progress" id="dirProgress2">BLOQUEADO</span>
+        </button>
+        <button class="directory-card" type="button" data-directory="3" disabled>
+            <span class="directory-icon">🛡️</span><strong>SECURITY</strong><small>Permisos y seguridad</small><span class="directory-progress" id="dirProgress3">BLOQUEADO</span>
+        </button>
+    </div>
+    <p class="directory-note">NEXO: Cada directorio contiene desafíos. El tiempo sigue corriendo mientras explorás.</p>
+</div>
+
 <div id="zonaJuego" hidden>
  <p id="categoria" class="eyebrow"></p>
  <h2 id="tituloMision"></h2>
@@ -182,20 +196,18 @@
     COMPROBAR RESPUESTA
     </button>
 <button id="btnSiguiente" class="btn btn-primary" hidden>
-  SIGUIENTE MISIÓN →
+  SIGUIENTE DESAFÍO →
     </button>
+<button id="btnVolverDirectorios" class="btn btn-secondary" type="button">
+    VOLVER A DIRECTORIOS ↩
+</button>
 </div>
 
 <div id="pantallaFinal" class="center-screen" hidden>
-<div id="celebracionMonigote" class="celebration-stage" hidden aria-label="Monigote 2D festejando">
+<div id="celebracionMonigote" class="celebration-stage" hidden aria-label="NEXO festejando">
     <span class="confetti confetti-one">✦</span><span class="confetti confetti-two">✦</span>
     <span class="confetti confetti-three">✦</span><span class="confetti confetti-four">✦</span>
-    <div class="celebration-man">
-        <div class="celebration-head"><span class="celebration-eye left"></span><span class="celebration-eye right"></span><span class="celebration-smile"></span></div>
-        <div class="celebration-body"><span>★</span></div>
-        <div class="celebration-arm left"><i></i></div><div class="celebration-arm right"><i></i></div>
-        <div class="celebration-leg left"><i></i></div><div class="celebration-leg right"><i></i></div>
-    </div>
+    <img class="celebration-nexo" src="assets/nexo-robot.png" alt="NEXO celebrando">
     <p class="celebration-caption">MISSION COMPLETE! 🎉</p>
 </div>
 <div id="iconoFinal" class="big-icon">✓</div>
@@ -213,7 +225,7 @@
 
 <footer>
   <span>HACK THE SCHOOL // ENTORNO SIMULADO</span>
-  <span>BUILD 01.08</span>
+  <span>BUILD 01.09</span>
         </footer>
     </main>
 
